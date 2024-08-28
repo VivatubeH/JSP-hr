@@ -1,7 +1,13 @@
 <h1>사원관리 프로젝트</h1>
 
-<p>목적 : JSP에서 데이터베이스 insert, select, update, delete 구현하기</p>
-<p>작업 기간 : 2024년 8월 26일 ~ 8월 28일(3일)</p>
+<ul>
+  <dl>
+      <dt>작업 기간</dt>
+      <dd>2024년 8월 26일(월) ~ 2024년 8월 28일(수)</dd>
+      <dt>작업 목적</dt>
+      <dd>JSP내에서 자바 코드를 통한 오라클 데이터베이스 select, update, insert, delete 작업 수행하기</dd>
+  </dl>
+</ul>
 
 <h2>자바 소스코드</h2>
 <ul>
