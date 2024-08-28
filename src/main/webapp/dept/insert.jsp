@@ -1,3 +1,4 @@
+<%@page import="dao.DeptDao"%>
 <%@page import="vo.Dept"%>
 <%@page import="utils.Utils"%>
 <%@ page contentType="text/html;charset=utf-8" pageEncoding="utf-8" %>
@@ -29,10 +30,16 @@
 	int locationId = Utils.toInt(request.getParameter("locationId"));
 	
 	// 2. 전달받은 정보를 VO에 저장한다.
+	// 부서 아이디는 insert 메서드에서 시퀀스를 통해 입력하도록 한다.
 	Dept dept = new Dept();
 	dept.setDepartmentName(deptName);
 	dept.setManagerId(managerId);
 	dept.setLocationId(locationId);
 	
 	// 3. DAO의 메서드를 통해 DB에 등록한다.
+	DeptDao deptDao = new DeptDao();
+	deptDao.insertDept(dept);
+	
+	// 4. 등록 후에 deptlist를 보여주자.
+	response.sendRedirect("deptlist.jsp");
 %>

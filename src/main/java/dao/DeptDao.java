@@ -165,5 +165,38 @@ public class DeptDao {
 			VALUES
 			(DEPARTMENTS_SEQ.NEXTVAL, ?, ?, ?)		
 		""";	
+		Connection con = ConnectionUtils.getConnection();
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, dept.getDepartmentName());
+		pstmt.setInt(2, dept.getManagerId());
+		pstmt.setInt(3, dept.getLocationId());
+		pstmt.executeUpdate();
+		
+		pstmt.close();
+		con.close();
+		
+		return;
+	}
+	
+	/**
+	 * 부서 아이디를 전달해서 해당 부서를 DB에서 삭제시킨다.
+	 * @param deptId 부서 아이디
+	 * @throws SQLException
+	 */
+	public void deleteDept(int deptId) throws SQLException {
+		String sql = """
+			delete from departments
+			where
+				department_id = ?		
+			""";
+		Connection con = ConnectionUtils.getConnection();
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, deptId);
+		pstmt.executeUpdate();
+		
+		pstmt.close();
+		con.close();
+		
+		return;
 	}
 }

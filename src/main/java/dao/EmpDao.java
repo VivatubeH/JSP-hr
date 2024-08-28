@@ -9,6 +9,7 @@ import java.util.List;
 
 import utils.ConnectionUtils;
 import vo.Emp;
+import vo.EmpSalary;
 
 public class EmpDao {
 
@@ -88,5 +89,95 @@ public class EmpDao {
 		con.close();
 		
 		return emps;
+	}
+	
+	/**
+	 * 직원 아이디를 전달받아서 직원 정보가 담긴 객체를 반환한다.
+	 * @param id 직원 아이디
+	 * @return 직원 정보가 담긴 객체
+	 * @throws SQLException
+	 */
+	public Emp getEmp(int id) throws SQLException {
+		String sql = """
+			select employee_id
+			    , first_name
+			    , last_name
+			    , email
+			    , phone_number
+			    , hire_date
+			    , job_id
+			    , salary
+			    , commission_pct
+			    , manager_id
+			    , department_id
+			from employees
+			where employee_id = ?
+		""";
+		Connection con = ConnectionUtils.getConnection();
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, id);
+		ResultSet rs = pstmt.executeQuery();
+		
+		Emp emp = null;
+		
+		while(rs.next()) {
+			emp = new Emp();
+			emp.setId(rs.getInt("employee_id"));
+			emp.setFirstName(rs.getString("first_name"));
+			emp.setLastName(rs.getString("last_name"));
+			emp.setEmail(rs.getString("email"));
+			emp.setPhoneNumber(rs.getString("phone_number"));
+			emp.setHireDate(rs.getDate("hire_date"));
+			emp.setJobId(rs.getString("job_id"));
+			emp.setSalary(rs.getDouble("salary"));
+			emp.setCommissionPct(rs.getDouble("commission_pct"));
+			emp.setManagerId(rs.getInt("manager_id"));
+			emp.setDepartmentId(rs.getInt("department_id"));
+		}
+		rs.close();
+		pstmt.close();
+		con.close();
+		
+		return emp;
+	}
+	
+	/**
+	 * 직원 아이디를 바탕으로 직원의 급여 관련 정보를 조회한다.
+	 * @param empId 직원 아이디
+	 * @return 직원의 급여 정보가 담긴 객체
+	 * @throws SQLException
+	 */
+	public EmpSalary getEmpSalaryByEmpId(int empId) throws SQLException {
+		String sql = """
+				select employee_id
+				    , salary
+				    , commission_pct
+				    , salary*12 annual_salary
+				    , sal_grade
+				from employees e, salary_grades g
+				where
+				e.employee_id = ?
+				and
+				e.salary between g.min_salary and g.max_salary
+			""";
+		Connection con = ConnectionUtils.getConnection();
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, empId);
+		ResultSet rs = pstmt.executeQuery();
+		EmpSalary empSalary = null;
+		
+		while(rs.next()) {
+			empSalary = new EmpSalary();
+			empSalary.setId(rs.getInt("employee_id"));
+			empSalary.setSalary(rs.getDouble("salary"));
+			empSalary.setCommissionPct(rs.getDouble("commission_pct"));
+			empSalary.setAnnualSalary(rs.getDouble("annual_salary"));
+			empSalary.setSalgrade(rs.getString("sal_grade"));
+		}
+		rs.close();
+		pstmt.close();
+		con.close();
+		
+		return empSalary;
 	}
 }

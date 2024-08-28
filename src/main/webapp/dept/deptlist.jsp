@@ -23,6 +23,7 @@
 			<th>소재지</th>
 			<th>소속직원수</th>
 			<th></th>
+			<th></th>
 		</tr>
 	</thead>
 <%
@@ -40,6 +41,7 @@
 		<td><%=deptlist.getCity() %></td>
 		<td><%=deptlist.getCnt() %></td>
 		<td><a href="modify-form.jsp?id=<%=deptlist.getId()%>">수정</a></td>
+		<td><a href="delete-form.jsp?id=<%=deptlist.getId()%>">삭제</a></td>
 		</tr>
 <%
 	}
